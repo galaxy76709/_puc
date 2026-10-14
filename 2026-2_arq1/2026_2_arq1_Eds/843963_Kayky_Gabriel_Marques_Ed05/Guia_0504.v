@@ -1,0 +1,51 @@
+/* 
+  Guia_0504.v
+  845963 - Kayky Gabriel Marques 
+*/ 
+
+module f4a ( output s, 
+             input  a, 
+             input  b ); 
+// descrever por portas NAND
+   nand NAND1 (s, a, b); 
+endmodule // f4a 
+
+// ------------------------- 
+// outra forma de implementar 
+// ------------------------- 
+module f4b ( output s, 
+             input  a, 
+             input  b ); 
+// descrever por expressao
+   assign s = ~(a & b); 
+endmodule // f4b 
+
+
+// ------------------------- 
+// Teste dos módulos
+// ------------------------- 
+module test_f4; 
+    // ------------------------- definir dados 
+    reg  x; 
+    reg  y; 
+    wire a, b; 
+
+    f4a moduloA ( a, x, y ); 
+    f4b moduloB ( b, x, y ); 
+
+    // ------------------------- parte principal 
+    initial 
+    begin : main 
+        $display("Guia_0504 - Gabriel Ferreira Pereira - 842527"); 
+        $display("Test module ~(a & b)"); 
+        $display("   x     y    a    b"); 
+
+        // projetar testes do modulo 
+        $monitor("%4b %4b %4b %4b", x, y, a, b); 
+
+        x = 1'b0;  y = 1'b0; 
+    #1  x = 1'b0;  y = 1'b1; 
+    #1  x = 1'b1;  y = 1'b0; 
+    #1  x = 1'b1;  y = 1'b1; 
+    end 
+endmodule // test_f4

@@ -1,0 +1,166 @@
+ARQUITETURA DE COMPUTADORES I
+
+Instruções para entregas de tarefas:
+
+1. Criar uma pasta com o número de matrícula e nome
+   (por exemplo, 999999-XXX_YYY_ZZZ).
+
+   Evitar espaços em branco, acentos e cedilha
+   em nomes de pastas.
+
+2. Colocar nome e matrícula 
+   em todos os arquivos com texto 
+   (e como comentários iniciais em programas).
+   Formato  requerido   : .txt
+   Formatos extras poderão acompanhar o texto:
+   Formatos suplementar : .rtf (de preferência)
+   Formatos dispensáveis: .doc, .docx, 
+                          .xls, .xlsx ou .pdf,
+                          (somente quando solicitados).
+
+   Arquivos com programas deverão ser entregues 
+   separadamente do texto ou de complementos,
+   com as devidas extensões, 
+   e acompanhados de arquivos com dados e
+   expectativas de resultados com as respostas manuais,
+   de modo a poderem ser compilados, testados e verificados.
+   Formatos: .v, .vcd, .c, .cpp, .java, .py).
+
+   Arquivos com diagramas, como os gerados por
+   Logisim (.circ) ou JFlap (.jfl), 
+   deverão ser entregues junto com os originais. 
+
+   Imagens exportadas dos circuitos poderão acompanhar 
+   os mesmos, mas NÃO os substituirão e  
+   NÃO servirão como substitudos para avaliação. 
+
+   Evitar outros tipos como fotos de manuscritos 
+   ou capturas de telas.
+
+3. Colocar na pasta todos os arquivos do tipo texto
+   relativos à atividade, incluindo bibliotecas, testes
+   e, em caso de uso de ferramentas de inteligência artificial,
+   prompt e skills.
+   Arquivos intermediários (.o) ou executáveis (.exe)
+   deverão ser excluídos.
+
+   Evitar espaços em branco, acentos e cedilha
+   em nomes de arquivos.
+
+   Os códigos fontes deverão estar em formatos compatíveis
+   para a compilação e testes (ou simulações).
+
+   Os arquivos com módulos de testes e seus resultados
+   são indispensáveis e deverão ser entregues.
+
+4. Colocar nessa pasta todos os arquivos 
+   relativos à atividade, incluindo layouts e diagramas,
+   se houver.
+
+   Arquivos contendo comentários/observações (README.txt)
+   poderão ser anexados à raiz da pasta principal.
+
+   Arquivos suplementares (.pdf, fotos, imagens etc.) 
+   poderão ser acrescidos, mas NÂO servirão como substitutos
+   dos arquivos textos solicitados para fins de avaliação.
+
+5. Comprimir a pasta (999999-XXX_YYY_ZZZ.zip)
+
+   Evitar outros tipos de compactação (.rar, .gz, .7z).
+
+6. Entregar o arquivo compactado (999999-XXX_YYY_ZZZ.zip)
+   na atividade aberta ainda vigente.
+
+7. Exercícios em atraso poderão ser entregues 
+   em pastas separadas, devidamente identificadas, 
+   junto com outra tarefa aberta no Canvas; 
+   entretanto, estarão sujeitos aos critérios usados 
+   para entregas em atraso, independente dos motivos, 
+   e poderão NÃO ser considerados para efeitos de avaliação.
+   Entregas fora das tarefas do Canvas e dos prazos também
+   NÃO serão consideradas para efeitos de avaliação.
+
+Sugestão:
+   Tentar entregar os exercícios com antecipação.
+   Estabelecer como rotina realizar um primeiro envio
+   pelo menos uma hora antes do prazo estipulado. 
+   Se necessário, ainda haverá uma hora para revisão 
+   e novo envio. 
+   
+   Melhor realizar entrega parcial 
+   do que nenhuma entrega no prazo.
+   Nesse caso, usar o arquivo README.txt 
+   para indicar as pendências.
+
+Observações:
+   Exercícios entregues com muito atraso  
+   NÃO serão considerados para efeito de avaliação.
+   
+   Em virtude de recessos ou feriados 
+   ou circunstâncas especiais, 
+   datas de entregas poderão ser antecipadas.
+
+   Comentários, observações ou outros informações
+   pertinentes às tarefas poderão ser anexados,
+   na mesma pastas, em arquivo texto - README.TXT
+   para facilitar a comunicação de detalhes.
+
+   Recorrer às mensagens pelo Canvas, 
+   em caso de dúvidas ou para maiores esclarecimentos. 
+
+   Recorrer também Teams em outros casos.
+
+___
+
+Instruções para entregas de tarefas com artigo:
+
+1. Colocar nome e matrícula 
+   em todos os arquivos com texto 
+   (e como comentários iniciais em programas).
+   Formato  requerido  : .txt
+   Formatos extras poderão acompanhar o texto:
+   Formato suplementar : .rtf
+   Formatos extras     : .tex e .pdf (ambos)
+
+2. Criar uma pasta com o número de matrícula e nome
+   (por exemplo, 999999-XXX_YYY_ZZZ).
+   Evitar espaços em branco, acentos e cedilha
+   em nomes de pastas.
+
+3. Colocar nessa pasta todos os arquivos 
+   relativos à atividade
+   Evitar espaços em branco, acentos e cedilha
+   em nomes de arquivos.
+   Os códigos fontes deverão estar em formatos compatíveis
+   para a compilação e testes (ou simulações).
+
+4. Colocar nessa pasta todos os arquivos 
+   relativos à atividade. 
+   Arquivos (.tex) em pasta separada, caso utilizados.
+   Arquivos contendo comentários/observações (README.txt)
+   poderão ser anexados na raiz da pasta principal.
+
+5. Comprimir a pasta (999999-XXX_YYY_ZZZ.zip)
+   Evitar outros tipos de compactação (.rar, .gz, .7z).
+
+6. Entregar o arquivo compactado (999999-XXX_YYY_ZZZ.zip)
+   na atividade aberta correspondente para o artigo.
+
+Sugestão:
+   Tentar entregar os exercícios com antecipação.
+   Estabelecer como rotina realizar um primeiro envio
+   pelo menos uma hora antes do prazo estipulado. 
+   Se necessário, ainda haverá uma hora 
+   para revisão e novo envio.
+
+   Recorrer às mensagens pelo Canvas, 
+   em caso de dúvidas ou para maiores esclarecimentos. 
+
+Observações:
+   Exercícios entregues com muito atraso  
+   NÃO serão considerados para efeito de avaliação.
+   
+   Em virtude de recessos ou feriados 
+   ou circunstâncas especiais, 
+   datas de entregas poderão ser antecipadas.
+

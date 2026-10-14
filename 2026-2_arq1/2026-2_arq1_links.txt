@@ -1,0 +1,106 @@
+PUC-Minas
+Instituto de Ciências Exatas e Informática
+Curso de Ciência da Computação
+Arquitetura de Computadores I
+
+Links institucionais
+
+PUC
+
+https://www.pucminas.br
+
+SGA
+
+https://www.sistemas.pucminas.br/sgaaluno4/SilverStream/Pages/pgAln_LoginSSL.html
+
+Calendário
+
+https://www.pucminas.br/calendario/Documents/calendario-academico-2026.pdf#search=calend%C3%A1rio
+
+ICEI
+
+https://www.icei.pucminas.br
+
+Servidor para desenvolvimento
+
+https://octo.icei.pucminas.br/
+
+___
+
+Canvas
+
+5632100
+
+https://pucminas.instructure.com/courses/294635
+
+Teams
+
+https://teams.microsoft.com/l/team/19%3AbF8h1-FlA_YtHT2uS2iBvTAGczKyhiH4VmuPHtkIo6o1%40thread.tacv2/conversations?groupId=12602c12-5c77-4b40-b89b-4068a4a1e2c9&tenantId=5e2a8164-87b6-430b-ac6b-08d6229e7059
+
+___
+
+Links recomendados
+
+http://sourceforge.net/projects/iverilog/
+    Icarus Verilog Interactive compiler & simulator for Linux    
+    Versão recomendada: 12 (modificada) com GTKWave
+                        no pacote de programas distribuído
+                        no material compactado no Canvas em Arquivos
+                        e também no Teams.
+    Obs.:
+          Se existir uma versão mais nova do compilador,
+          entretanto, por ainda ser a de desenvolvimento e
+          poder apresentar problemas de execução,
+          em alguns casos, seu uso NÃO será recomendado.
+
+https://logisim.altervista.org/
+    Editor e simulador de circuitos lógicos
+    Versão recomendada: 2.16.y.z (19/11/2025) ou superior 
+                        no pacote de programas distribuído
+                        no material compactado no Canvas em Arquivos
+                        e também no Teams.
+    Obs.:
+          Existem outras versões da ferramenta,
+          entretanto, apresentam incompatibilidades
+          e seus usos NÃO são recomendados.
+
+http://www.cs.duke.edu/csed/jflap/jflaptmp/
+    Pacote para Máquinas de Estados Finitos
+    Versão recomendada: JFLAP v7.1 (JFLAP_Thin.jar) (27/07/2018)    
+                        no pacote de programas distribuído
+                        no material compactado no Canvas em Arquivos
+                        e também no Teams.
+     
+    IMPORTANTE:
+    A versão JFLAP8_beta.jar, mais nova,
+    apresenta erros e NÃO é recomendada.
+
+     
+http://www.cs.colby.edu/djskrien/CPUSim/
+    Simulador de conjunto de instruções
+    Versão recomendada: CPUSim v3.9.0
+                        no pacote de programas distribuído
+                        no material compactado no Canvas em Arquivos
+                        e também no Teams.
+
+    IMPORTANTE:
+    As versões mais recentes (4.xx.yy), apresentam erros 
+    quando usadas com a versão mais recente do Java, 
+    e NÃO são recomendadas para uso.
+
+___
+
+Links para outras utilidades:
+
+http://www.sutherland-hdl.com/online_verilog_ref_guide/vlog_ref_top.html
+    Verilog reference card
+    Manual online para Verilog
+    (melhor copiar e instalar na pasta IVI\docs ou IVerilog\docs)
+
+___
+
+Qualquer dúvida sobre o uso dos programas acima
+deverá ser encaminhada ao professor, aos monitores
+ou pessoal técnico do Centro de Recursos Computacionais
+do Instituto de Ciências Exatas e Informática.
+ 
