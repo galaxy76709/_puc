@@ -1,0 +1,356 @@
+/*
+Aluno: Kayky Gabriel Marques
+
+Matricula: 845963
+*/
+
+// -----Dependencias---------------------------------------------------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+
+// -----Data---------------------------------------------------------------
+
+typedef struct
+{
+    int ano;
+    int mes;
+    int dia;
+
+} Data;
+
+/* igual ao Data.parseData(String s) do java "ano-mes-dia" ex: 2019-03-05 */
+Data* parseData(char *s)
+{
+    Data *d = malloc(sizeof(Data));
+
+    if (d == NULL)
+        return NULL;
+
+    char copia[32];
+    strcpy(copia, s);
+
+    char *token = strtok(copia, "-");
+    d->ano = atoi(token);
+
+    token = strtok(NULL, "-");
+    d->mes = atoi(token);
+
+    token = strtok(NULL, "-");
+    d->dia = atoi(token);
+
+    return d;
+}
+
+/* equivalente ao Data.formatarData(), formato dd/mm/aaaa */
+void formatData(Data *d, char *buffer)
+{
+    sprintf(buffer, "%02d/%02d/%04d", d->dia, d->mes, d->ano);
+}
+
+// -----Veiculos---------------------------------------------------------------
+
+typedef struct
+{
+    int id;
+    char marca[500];
+    char modelo[500];
+    int ano;
+    char categoria[500];
+    char combustivel[5][500];
+    int nCombustivel;
+    int cilindros;
+    double cilindrada;
+    char transmissao[500];
+    char tracao[500];
+    double consumoCidade;
+    double consumoEstrada;
+    double co2;
+    bool turbo;
+    Data *dataRegistro;
+
+} Veiculo;
+
+/* funcao equivalente ao Carro.parseVeiculos(String s) do Java */
+Veiculo* parseVeiculo(char *s)
+{
+    Veiculo *v = malloc(sizeof(Veiculo));
+
+    if (v == NULL)
+        return NULL;
+
+    char copia[1024];
+    strcpy(copia, s);
+
+    char *campo = strtok(copia, ",");
+    v->id = atoi(campo);
+
+    campo = strtok(NULL, ",");
+    strcpy(v->marca, campo);
+
+    campo = strtok(NULL, ",");
+    strcpy(v->modelo, campo);
+
+    campo = strtok(NULL, ",");
+    v->ano = atoi(campo);
+
+    campo = strtok(NULL, ",");
+    strcpy(v->categoria, campo);
+
+    /* combustivel: lista separada por ';' */
+    campo = strtok(NULL, ",");
+
+    char combustivelStr[100];
+    strcpy(combustivelStr, campo);
+
+    v->nCombustivel = 0;
+
+    char *ini = combustivelStr;
+    char *pv;
+
+    while ((pv = strchr(ini, ';')) != NULL && v->nCombustivel < 5)
+    {
+        int len = (int)(pv - ini);
+
+        strncpy(v->combustivel[v->nCombustivel], ini, len);
+        v->combustivel[v->nCombustivel][len] = '\0';
+
+        v->nCombustivel++;
+        ini = pv + 1;
+    }
+
+    if (v->nCombustivel < 5)
+    {
+        strcpy(v->combustivel[v->nCombustivel], ini);
+        v->nCombustivel++;
+    }
+
+    campo = strtok(NULL, ",");
+    v->cilindros = atoi(campo);
+
+    campo = strtok(NULL, ",");
+    v->cilindrada = atof(campo);
+
+    campo = strtok(NULL, ",");
+    strcpy(v->transmissao, campo);
+
+    campo = strtok(NULL, ",");
+    strcpy(v->tracao, campo);
+
+    campo = strtok(NULL, ",");
+    v->consumoCidade = atof(campo);
+
+    campo = strtok(NULL, ",");
+    v->consumoEstrada = atof(campo);
+
+    campo = strtok(NULL, ",");
+    v->co2 = atof(campo);
+
+    campo = strtok(NULL, ",");
+    v->turbo = (strcmp(campo, "true") == 0);
+
+    campo = strtok(NULL, ",");
+    v->dataRegistro = parseData(campo);
+
+    return v;
+}
+
+/* igual ao Carro.formatar() do Java */
+void formatVeiculo(Veiculo *v, char *buffer)
+{
+    char combustiveis[100] = "[";
+
+    for (int i = 0; i < v->nCombustivel; i++)
+    {
+        strcat(combustiveis, v->combustivel[i]);
+
+        if (i < v->nCombustivel - 1)
+        {
+            strcat(combustiveis, ",");
+        }
+    }
+
+    strcat(combustiveis, "]");
+
+    char dataFormatada[16];
+    formatData(v->dataRegistro, dataFormatada);
+
+    sprintf(buffer,
+            "[%d ## %s ## %s ## %d ## %s ## %s ## %d ## %.1f ## %s ## %s ## %.2f ## %.2f ## %.1f ## %s ## %s]",
+            v->id,
+            v->marca,
+            v->modelo,
+            v->ano,
+            v->categoria,
+            combustiveis,
+            v->cilindros,
+            v->cilindrada,
+            v->transmissao,
+            v->tracao,
+            v->consumoCidade,
+            v->consumoEstrada,
+            v->co2,
+            v->turbo ? "true" : "false",
+            dataFormatada);
+}
+
+// -----leitura Csv---------------------------------------------------------------
+
+Veiculo* lerCsv(char *caminhoArquivo, int *n)
+{
+    FILE *arquivo = fopen(caminhoArquivo, "r");
+
+    if (arquivo == NULL)
+    {
+        *n = 0;
+        return NULL;
+    }
+
+    Veiculo *carros = malloc(20000 * sizeof(Veiculo));
+
+    *n = 0;
+
+    char linha[9999];
+
+    fgets(linha, 9999, arquivo);
+
+    while (fgets(linha, 9999, arquivo) != NULL)
+    {
+        linha[strcspn(linha, "\r\n")] = '\0';
+
+        if (strlen(linha) == 0)
+            continue;
+
+        if (*n >= 20000)
+            break;
+
+        Veiculo *v = parseVeiculo(linha);
+
+        carros[*n] = *v;
+
+        free(v);
+
+        (*n)++;
+    }
+
+    fclose(arquivo);
+
+    return carros;
+}
+
+// -----Ordenacao por Radixsort---------------------------------------------------------------
+
+/* funcao aux destinada para pegar o maior valor de ano */
+int getMaior(Veiculo *carros, int n)
+{
+    int maior = carros[0].ano;
+
+    for (int i = 0; i < n; i++)
+    {
+        if (carros[i].ano > maior)
+        {
+            maior = carros[i].ano;
+        }
+    }
+
+    return maior;
+}
+
+// ideia de funcao retirada do Github de Aeds 2, adaptada para o uso do Tp_Q06
+void radcountingSort(Veiculo *carros, int n, int exp)
+{
+    int count[10];
+
+    Veiculo *output = malloc(n * sizeof(Veiculo));
+
+// inicializar cada posicao do array de contagem 
+    for (int i = 0; i < 10; count[i] = 0, i++);
+
+    // contar os digitos do ano 
+    for (int i = 0; i < n; i++)
+    { count[(carros[i].ano / exp) % 10]++; }
+
+// quantidade acumulada 
+    for (int i = 1; i < 10; i++)
+    { count[i] += count[i - 1]; }
+
+// ordenacao estavel 
+    for (int i = n - 1; i >= 0; i--)
+    {
+        int digito = (carros[i].ano / exp) % 10;
+
+        output[count[digito] - 1] = carros[i];
+
+        count[digito]--;
+    }
+
+    /* copiar para o vetor original */
+    for (int i = 0; i < n; i++)
+    {
+        carros[i] = output[i];
+    }
+
+    free(output);
+}
+
+// Radix Sort usando o atributo ano como chave 
+void radixSort(Veiculo *carros, int n)
+{
+    int maior = getMaior(carros, n);
+
+    for (int exp = 1; maior / exp > 0; exp *= 10)
+    {
+        radcountingSort(carros, n, exp);
+    }
+}
+
+// ----- main ---------------------------------------------------------------
+
+int main(void)
+{
+    int n = 0;
+
+    Veiculo *carros = lerCsv("/tmp/veiculos.csv", &n);
+    char linha[64];
+    Veiculo *selecionados = malloc(n * sizeof(Veiculo));
+    int quantidadeSelecionados = 0;
+
+    while (fgets(linha, sizeof(linha), stdin) != NULL)
+    {
+        int id = atoi(linha);
+
+        if (id == -1)
+        {
+            break;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            if (carros[i].id == id)
+            {
+                selecionados[quantidadeSelecionados] = carros[i];
+                quantidadeSelecionados++;
+                break;
+            }
+        }
+    }
+
+    radixSort(selecionados, quantidadeSelecionados);
+
+    for (int i = 0; i < quantidadeSelecionados; i++)
+    {
+        char buffer[1024];
+
+        formatVeiculo(&selecionados[i], buffer);
+
+        printf("%s\n", buffer);
+    }
+
+    free(selecionados);
+    free(carros);
+
+    return 0;
+}
+
