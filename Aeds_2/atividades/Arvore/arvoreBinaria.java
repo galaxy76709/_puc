@@ -193,7 +193,7 @@ package Aeds_2.atividades.Arvore;
 
      private  No remove ( int X, No i ) {
      if ( i == null ) { 
-          System.out.println("Err ao remover o valor da arvore...");
+          System.out.println("Erro ao remover o valor da arvore...");
      }
 
      else if ( X < i.elemento ) { i.left = remove(X, i.left ); }
@@ -211,7 +211,7 @@ package Aeds_2.atividades.Arvore;
 //
 //--------------------------------------------------------
 // metodo para pegar os maiores valores
-private  No bigLeft ( No i, No L  ) {
+     private  No bigLeft ( No i, No L  ) {
 
      if ( L.right == null ) { 
           i.elemento = L.elemento; 
@@ -221,7 +221,7 @@ private  No bigLeft ( No i, No L  ) {
      return L;
 }
 
-public  int getBiggest ( ){
+     public  int getBiggest ( ){
      int answ = -1; // valores sendo considerados >= 0 
      
      if ( root != null ){
@@ -233,7 +233,7 @@ public  int getBiggest ( ){
      return answ;
 }
 
-public  int getMinor ( ){
+     public  int getMinor ( ){
      int answ = -1; // valores sendo considerados >= 0 
      
      if ( root != null ){
@@ -245,8 +245,22 @@ public  int getMinor ( ){
      return answ;
 }
 
-public  int getHigh( ){
-     return  getHigh();
+     public  int getHigh( ){ return  getHigh(); }
+
+     private  int getHigh ( No i, int high ){
+
+          if ( i == null ) { high = high - 1; }
+          else {
+
+                int highLeft   = getHigh(i.left, high + 1); 
+                int highRight  = getHigh(i.left, high + 1); 
+
+                high = ( highLeft > highRight ) ? highLeft : highRight; 
+
+          }
+
+          return high;
+
 
 }
 
