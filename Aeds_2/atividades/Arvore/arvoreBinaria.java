@@ -134,7 +134,6 @@ package Aeds_2.atividades.Arvore;
 
 //
 
-
 //funcao vai tratar a condicao de valores iguais como maiore logo 
 // se X = X, o valor sera inserido a sua direita 
      private  No insert ( int X, No i ){
@@ -216,7 +215,8 @@ package Aeds_2.atividades.Arvore;
      if ( L.right == null ) { 
           i.elemento = L.elemento; 
           L = L.left; 
-     } else {   L.right = bigLeft(i, L.right); }
+     }
+      else {   L.right = bigLeft(i, L.right); }
 
      return L;
 }

@@ -173,7 +173,8 @@ public class filmeOscar
                 
             }
 
-        
+                sc.close();
+
     }
     
 }

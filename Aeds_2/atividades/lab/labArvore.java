@@ -69,9 +69,7 @@ public  class arvoreBinaria {
 
 
 // funcao destinado para busca na arvore
-    public boolean serch ( int target) {
-            return serchRec(target, root);
-        }
+    public boolean serch ( int target) { return serchRec(target, root); }
 
         private boolean serchRec (int target, No i) {
             boolean find = false;
@@ -89,12 +87,12 @@ public  class arvoreBinaria {
             else   { find = serchRec( target, i.right); }
 
              return  find; 
-        }
+    }
 // end serch 
 
 
 // metodo de insercao nao tratara valores iguais
-        public void insert ( int X ) { root = insert(X, root ); }
+        public void insert ( int X ) { root = insert( X, root ); }
 
         private  No insert ( int X, No i )
         { 
@@ -109,7 +107,7 @@ public  class arvoreBinaria {
 // funcao de caminho central (Em ordem da raiz)
         public void toWalkCentral( ) {
             if (root == null) {
-                System.out.println( "V");
+                System.out.println("V");
                 return;
             }
             toWalkCentral(root);

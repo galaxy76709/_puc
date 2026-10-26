@@ -144,7 +144,7 @@ public class destaqueAcademico
                 
             }
 
-        
+        sc.close();
     }
     
 }

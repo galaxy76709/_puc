@@ -153,7 +153,7 @@ public class corridaDeRua
                 
             }
 
-        
+                sc.close();
     }
     
 }
