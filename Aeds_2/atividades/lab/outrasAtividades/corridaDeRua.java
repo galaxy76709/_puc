@@ -41,7 +41,7 @@ Cada corredor deverá ser apresentado em uma linha, contendo o nome
 seguido das horas, minutos e segundos, no mesmo formato da entrada.
 
 Não imprima linhas em branco entre os casos de teste.
-*/package Aeds_2.atividades.lab;
+*/package Aeds_2.atividades.lab.outrasAtividades;
 import java.util.*;
 
 

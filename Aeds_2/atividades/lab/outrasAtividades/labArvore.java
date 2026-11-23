@@ -1,4 +1,4 @@
-package Aeds_2.atividades.lab;
+package Aeds_2.atividades.lab.outrasAtividades;
 
 import java.util.Scanner;
 

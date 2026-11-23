@@ -1,5 +1,5 @@
 
-package Aeds_2.atividades;
+package Aeds_2.atividades.lab.outrasAtividades;
 import java.util.*;
 
 class tp_21 {

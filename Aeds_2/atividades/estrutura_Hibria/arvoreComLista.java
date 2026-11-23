@@ -98,6 +98,7 @@ public class arvoreComLista{
         public Agenda ( ){ root = null; }
 
         
+//--------------------------------------------------------
 
         public void inserir (char letra)
         { root = inserir(letra, root); }
@@ -110,6 +111,8 @@ public class arvoreComLista{
              return  i;
 
         }
+
+//--------------------------------------------------------
 
         public boolean pesquisaNome (String nome )
         { return   pesquisaNome (root, nome ); }
@@ -130,6 +133,8 @@ public class arvoreComLista{
             return  resp; 
         }
 
+//--------------------------------------------------------
+
         public void inserir ( Contato contato ) throws Exception 
         { 
             if ( Character.isLetter(contato.nome.charAt ( 0 ) ) ) {  
@@ -137,6 +142,9 @@ public class arvoreComLista{
             }
             else { throw new Error("Erro, contato sem nome aparente"); }
         } 
+
+//--------------------------------------------------------
+
 
         private No inserir( Contato contato, No no ){
             char tmpLetra = Character.toUpperCase(contato.nome.charAt(0));
@@ -150,6 +158,8 @@ public class arvoreComLista{
 
             return  no; 
         }
+
+//--------------------------------------------------------
 
         public boolean pesquisarCpf  ( int cpf ){
             return  pesquisarCpf(root,cpf);
@@ -167,6 +177,8 @@ public class arvoreComLista{
             return resp;
         }
 
+//--------------------------------------------------------
+
         private boolean pesquisarCpf(Celula celula, int cpf) {
             for (Celula i = celula; i != null; i = i.prox) {
                 if (i.contato.cpf == cpf) {
@@ -176,8 +188,84 @@ public class arvoreComLista{
             return false;
         }
 
-    }
+//--------------------------------------------------------
+
+        public void remover(String nome) throws Exception {
+            remover(nome, root);
+        }
+
+        private void remover(String nome, No no) {
+            if (no == null) {
+                throw new Error("Erro, sem conteudo para ser removido. . . ");
+            }
+
+            char inicial = Character.toUpperCase(nome.charAt(0));
+
+            if (inicial < no.letra) { remover(nome, no.esq); } 
+            
+            else if (inicial > no.letra) { remover(nome, no.dir); } 
+            
+            else {
+                boolean achou = false;
+
+// a celula de i nunca chega no ultimo, ela verifica ate a penultima posicao dos valores
+                for (Celula i = no.primeiro; !achou && i.prox != null; i = i.prox) {
+                    if (i.prox.contato.nome.equals(nome)) {
+// condicao de exisitenca da ultima celula igual 
+                        if (no.ultimo == i.prox) { no.ultimo = i; }
+                        i.prox = i.prox.prox;
+                        achou = true;
+                    }
+                }
+
+                if (!achou) { throw new Error("Erro, contato nao existe na lista de contatos..."); }
+            }
+        }
+
+//--------------------------------------------------------
+
+        public void removerLetra (char letra ) throws Exception { root = removerLetra(root, Character.toUpperCase(letra)) ;}
+
+        private No removerLetra ( No no , char letra) {
+            if ( no == null ) { throw new Error("Erro: Letra nao encontrada"); }
+
+            else if ( letra < no.letra ) { no.esq = removerLetra ( no.esq ,letra );}
+            else if ( letra > no.letra ) { no.dir = removerLetra ( no.dir ,letra );}
+
+// condicao caso nao tenha valores na direita
+            else {
+                if ( no.dir == null ) {  no = no.esq; } // o valor sera o da esquerda 
+
+// condicao caso nao tenha valores na esquerda 
+                else if ( no.esq == null ) { no = no.dir; } // o valor sera o da dir
+
+                else {
+                    no.esq = subPeloMaiorEsquerda ( no ,no.esq ); 
+                }
+            }
+
+            return  no; 
+        }
 
 
+        private No subPeloMaiorEsquerda ( No noRemovido, No i ){
 
+// caminha para direia para achar o maior valor
+            if ( i.dir == null ){
+                noRemovido.letra    = i.letra;
+                noRemovido.primeiro = i.primeiro;
+                noRemovido.ultimo   = i.ultimo;
+
+// remove i( copiado ) reconectando os valores que sobrou a esquerda 
+                  i = i.esq;
+              } 
+              else { i.dir = subPeloMaiorEsquerda ( noRemovido, i.dir ); }
+
+              return i; 
+
+           }
+
+//--------------------------------------------------------
+
+}
 }
