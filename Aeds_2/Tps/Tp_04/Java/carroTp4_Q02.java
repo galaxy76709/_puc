@@ -1,14 +1,11 @@
-
 /*
-14/10
+24/11
 aluno     >> Kayky Gabriel Marques
 matricula >> 845963
 
 
 */
-// -----Dependencias---------------------------------------------------------------
-
-package Aeds_2.Tps.Tp_03;
+package Aeds_2.Tps.Tp_04.Java;
 
 import java.util.*;
 import java.io.*;
@@ -157,7 +154,6 @@ class Data {
 
 // --------------------------------------------
 
-// -----Carro---------------------------------------------------------------
 // classe voltada para criacao e formatacao dos carros
 class Carro {
 	private int id = 0;
@@ -197,8 +193,6 @@ class Carro {
 		this.tracao = tracao;
 	}
 
-	// -----Gets---------------------------------------------------------------
-
 	public Carro() {
 	}
 
@@ -234,10 +228,6 @@ class Carro {
 
 	public String getMarca() {
 		return this.marca;
-	}
-
-	public String getCategoria() {
-		return this.categoria;
 	}
 
 	// construtor da classe Carro
@@ -294,9 +284,6 @@ class Carro {
 
 	public static Listam<Carro> lerCsv() throws IOException {
 		File arquivo = new File("/tmp/veiculos.csv");
-		if (!arquivo.isFile()) {
-			arquivo = new File("../../veiculos.csv");
-		}
 		Listam<Carro> carros = new Listam<>();
 
 		try (BufferedReader leitor = new BufferedReader(new InputStreamReader(
@@ -314,107 +301,72 @@ class Carro {
 
 }
 
-public class carroTp3_Q01 {
+public class carroTp4_Q02 {
 
 	/*
-	 * Merge Sort Q01
-	 * copia a lista para um vetor, ordena o vetor por consumo na cidade
-	 * (desempate por categoria) e devolve os valores para a lista
+	 * Funcao destinada para o Algoritimo de insercao Q04
+	 * Exemplo pego do GitHub de Aeds2 e modificado para ordenar apartir do atributo
+	 * marca
+	 * 
 	 */
-	public void mergeSort(Listam<Carro> lista) {
+
+	public void insertionSort(Listam<Carro> lista) {
+		for (int i = 0; i < lista.tamanho(); i++) {
+			Carro key = lista.buscarCelula(i).getValor();
+
+			int j = i - 1;
+			// lacao de repeticao que vai comparar o valor (marca) da celula J com o valor
+			// da key ( marca de I)
+			while (j >= 0 && lista.buscarCelula(j).getValor().getMarca().compareTo(key.getMarca()) > 0) {
+				lista.buscarCelula(j + 1).setValor(lista.buscarCelula(j).getValor());
+				j--;
+			}
+			lista.buscarCelula(j + 1).setValor(key);
+
+		}
+	}
+
+
+	public void insertionSortParcial(Listam<Carro> lista, int k) {
 		int n = lista.tamanho();
-		if (n < 2)
+		if (k > n) {
+			k = n;
+		}
+		if (k <= 0) {
 			return;
+		}
 
-		Carro[] v = new Carro[n];
-		Celula<Carro> atual = lista.buscarCelula(0);
-		for (int i = 0; i < n; i++) {
-			v[i] = atual.getValor();
+		for (int i = 1; i < k; i++) {
+			Carro key = lista.buscarCelula(i).getValor();
+			int j = i - 1;
+			while (j >= 0 && lista.buscarCelula(j).getValor().getMarca().compareTo(key.getMarca()) > 0) {
+				lista.buscarCelula(j + 1).setValor(lista.buscarCelula(j).getValor());
+				j--;
+			}
+			lista.buscarCelula(j + 1).setValor(key);
+		}
+
+		Celula<Carro> atual = (k < n) ? lista.buscarCelula(k) : null;
+		while (atual != null) {
+			Carro key = atual.getValor();
+			Carro maiorDosK = lista.buscarCelula(k - 1).getValor();
+
+			if (key.getMarca().compareTo(maiorDosK.getMarca()) < 0) {
+				int j = k - 2;
+				while (j >= 0 && lista.buscarCelula(j).getValor().getMarca().compareTo(key.getMarca()) > 0) {
+					lista.buscarCelula(j + 1).setValor(lista.buscarCelula(j).getValor());
+					j--;
+				}
+				lista.buscarCelula(j + 1).setValor(key);
+			}
 			atual = atual.prox;
 		}
-
-		mergeSort(v, new Carro[n], 0, n - 1);
-
-// vetor >> lista (uma unica passada)
-		atual = lista.buscarCelula(0);
-		for (int i = 0; i < n; i++) {
-			atual.setValor(v[i]);
-			atual = atual.prox;
-		}
-	}
-
-	private void mergeSort(Carro[] v, Carro[] aux, int left, int right) {
-		if (left >= right)
-			return;
-
-		int mid = left + (right - left) / 2;
-		mergeSort(v, aux, left, mid);
-		mergeSort(v, aux, mid + 1, right);
-
-		if (comparar(v[mid], v[mid + 1]) <= 0) {return;} //condicao que preve se os valores sao identicos, caso seja nao precisa comparar 
-
-		intercalar(v, aux, left, mid, right);
-	}
-
-	private void intercalar(Carro[] v, Carro[] aux, int left, int mid, int right) {
-		for (int i = left; i <= right; i++) {
-			aux[i] = v[i];
-		}
-
-		int i = left;
-		int j = mid + 1;
-		int k = left;
-
-		while (i <= mid && j <= right) {
-			if (comparar(aux[i], aux[j]) <= 0) {
-				v[k++] = aux[i++];
-			} else {
-				v[k++] = aux[j++];
-			}
-		}
-		while (i <= mid) {
-			v[k++] = aux[i++];
-		}
-// o que sobrar em j ja esta no lugar certo
-	}
-
-// compara por consumo na cidade e, em caso de empate, por categoria
-	public  int comparar(Carro primeiro, Carro segundo) {
-		int comparacaoConsumo = compararDouble(primeiro.getConsumeCidade(),
-				segundo.getConsumeCidade());
-
-		if (comparacaoConsumo != 0) {
-			return comparacaoConsumo;
-		}
-
-		return compararString(primeiro.getCategoria(), segundo.getCategoria());
-	}
-
-	public int compararDouble(double a, double b) {
-		if (a < b) return -1; // b maior q a 
-
-		if (a > b) return 1; // a maior que b 
-
-		return 0; // iguais
-	}
-
-	public int compararString(String a, String b) {
-		int tamanho = Math.min(a.length(), b.length());
-
-		for (int i = 0; i < tamanho; i++) {
-			char ca = a.charAt(i);
-			char cb = b.charAt(i);
-			if (ca != cb) {
-				return ca - cb;
-			}
-		}
-
-		return a.length() - b.length();
 	}
 
 	public static void main(String[] args) throws IOException {
 		Listam<Carro> carros = Carro.lerCsv();
-		carroTp3_Q01 ordenador = new carroTp3_Q01();
+		carroTp4_Q02 ordenador = new carroTp4_Q02();
+
 		Listam<Carro> selecionados = new Listam<>();
 
 		try (BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in))) {
@@ -436,10 +388,13 @@ public class carroTp3_Q01 {
 			}
 		}
 
-		// ordena apenas os carros solicitados por consumo na cidade e categoria
-		ordenador.mergeSort(selecionados);
+// ordenacao parcial >> por marca, apenas as k primeiras posicoes
+		int k = 10;
+		ordenador.insertionSortParcial(selecionados, k);
 
-		for (int i = 0; i < selecionados.tamanho(); i++) {
+// imprime somente as k primeiras (as unicas que estao ordenadas)
+		int limite = Math.min(k, selecionados.tamanho());
+		for (int i = 0; i < limite; i++) {
 			System.out.println(selecionados.buscarCelula(i).getValor().formatar());
 		}
 	}

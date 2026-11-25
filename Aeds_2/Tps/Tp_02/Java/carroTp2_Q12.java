@@ -1,4 +1,4 @@
-package Aeds_2.Tps.Tp_02;
+//package Questao01;
 
 /*
 Aluno: Kayky Gabriel Marques
@@ -7,7 +7,7 @@ Matricula: 845963
 */
 
 // -----Dependencias---------------------------------------------------------------
-
+package Aeds_2.Tps.Tp_02.Java;
 import java.util.*;
 import java.io.*;
 
@@ -235,111 +235,63 @@ class Carro {
     }
 }
 
-// -----Lista com Alocacao Sequencial---------------------------------------------------------------
+// -----No (celula da pilha encadeada)---------------------------------------------------------------
 
-class Lista {
+class No {
 
-    private Carro[] array;
-    private int n;
+    private Carro carro;
+    private No proximo;
 
-    public Lista() {
-        this(20000);
+    public No(Carro carro) {
+        this.carro = carro;
+        this.proximo = null;
     }
 
-    public Lista(int tamanho) {
+    public Carro getCarro() {
+        return this.carro;
+    }
 
-        array = new Carro[tamanho];
+    public No getProximo() {
+        return this.proximo;
+    }
+
+    public void setProximo(No proximo) {
+        this.proximo = proximo;
+    }
+}
+
+// -----Pilha com Alocacao Flexivel (encadeada)---------------------------------------------------------------
+
+class Pilha {
+
+    private No topo;
+    private int n;
+
+    public Pilha() {
+        topo = null;
         n = 0;
     }
 
-    public void inserirInicio(Carro carro) throws Exception {
+    public void empilhar(Carro carro) {
 
-        if (n >= array.length) {
-            throw new Exception("Erro ao inserir!");
-        }
+        No novo = new No(carro);
 
-        for (int i = n; i > 0; i--) {
-            array[i] = array[i - 1];
-        }
+        novo.setProximo(topo);
 
-        array[0] = carro;
+        topo = novo;
 
         n++;
     }
 
-    public void inserir(Carro carro, int posicao) throws Exception {
-
-        if (n >= array.length || posicao < 0 || posicao > n) {
-            throw new Exception("Erro ao inserir!");
-        }
-
-        for (int i = n; i > posicao; i--) {
-            array[i] = array[i - 1];
-        }
-
-        array[posicao] = carro;
-
-        n++;
-    }
-
-    public void inserirFim(Carro carro) throws Exception {
-
-        if (n >= array.length) {
-            throw new Exception("Erro ao inserir!");
-        }
-
-        array[n] = carro;
-
-        n++;
-    }
-
-    public Carro removerInicio() throws Exception {
+    public Carro desempilhar() throws Exception {
 
         if (n == 0) {
             throw new Exception("Erro ao remover!");
         }
 
-        Carro removido = array[0];
+        Carro removido = topo.getCarro();
 
-        for (int i = 0; i < n - 1; i++) {
-            array[i] = array[i + 1];
-        }
-
-        array[n - 1] = null;
-
-        n--;
-
-        return removido;
-    }
-
-    public Carro remover(int posicao) throws Exception {
-
-        if (n == 0 || posicao < 0 || posicao >= n) {
-            throw new Exception("Erro ao remover!");
-        }
-
-        Carro removido = array[posicao];
-
-        for (int i = posicao; i < n - 1; i++) {
-            array[i] = array[i + 1];
-        }
-
-        array[n - 1] = null;
-
-        n--;
-
-        return removido;
-    }
-
-    public Carro removerFim() throws Exception {
-
-        if (n == 0) {
-            throw new Exception("Erro ao remover!");
-        }
-
-        Carro removido = array[n - 1];
-
-        array[n - 1] = null;
+        topo = topo.getProximo();
 
         n--;
 
@@ -350,21 +302,20 @@ class Lista {
         return n;
     }
 
-    public Carro get(int posicao) {
-        return array[posicao];
-    }
-
     public void mostrar() {
 
-        for (int i = 0; i < n; i++) {
-            System.out.println(array[i].formatar());
+        No atual = topo;
+
+        while (atual != null) {
+            System.out.println(atual.getCarro().formatar());
+            atual = atual.getProximo();
         }
     }
 }
 
 // -----Funcoes auxiliares---------------------------------------------------------------
 
-public class carroTp2_Q09 {
+public class carroTp2_Q12 {
 
     public static Carro buscarPorId(ArrayList<Carro> carros, int id) {
 
@@ -394,7 +345,7 @@ public class carroTp2_Q09 {
 
         ArrayList<Carro> carros = Carro.lerCsv();
 
-        Lista lista = new Lista();
+        Pilha pilha = new Pilha();
 
         BufferedReader entrada =
                 new BufferedReader(
@@ -415,7 +366,7 @@ public class carroTp2_Q09 {
             Carro carro = buscarPorId(carros, id);
 
             if (carro != null) {
-                lista.inserirFim(carro);
+                pilha.empilhar(carro);
             }
         }
 
@@ -433,65 +384,22 @@ public class carroTp2_Q09 {
 
             String comando = partes[0];
 
-            // II = inserir no inicio
-            if (comando.equals("II")) {
+            // I = inserir (empilhar)
+            if (comando.equals("I")) {
 
                 int id = Integer.parseInt(partes[1]);
 
                 Carro carro = buscarPorId(carros, id);
 
                 if (carro != null) {
-                    lista.inserirInicio(carro);
+                    pilha.empilhar(carro);
                 }
             }
 
-            // I* = inserir na posicao
-            else if (comando.equals("I*")) {
+            // R = remover (desempilhar)
+            else if (comando.equals("R")) {
 
-                int posicao = Integer.parseInt(partes[1]);
-                int id = Integer.parseInt(partes[2]);
-
-                Carro carro = buscarPorId(carros, id);
-
-                if (carro != null) {
-                    lista.inserir(carro, posicao);
-                }
-            }
-
-            // IF = inserir no fim
-            else if (comando.equals("IF")) {
-
-                int id = Integer.parseInt(partes[1]);
-
-                Carro carro = buscarPorId(carros, id);
-
-                if (carro != null) {
-                    lista.inserirFim(carro);
-                }
-            }
-
-            // RI = remover inicio
-            else if (comando.equals("RI")) {
-
-                Carro removido = lista.removerInicio();
-
-                imprimirRemovido(removido);
-            }
-
-            // R* = remover posicao
-            else if (comando.equals("R*")) {
-
-                int posicao = Integer.parseInt(partes[1]);
-
-                Carro removido = lista.remover(posicao);
-
-                imprimirRemovido(removido);
-            }
-
-            // RF = remover fim
-            else if (comando.equals("RF")) {
-
-                Carro removido = lista.removerFim();
+                Carro removido = pilha.desempilhar();
 
                 imprimirRemovido(removido);
             }
@@ -499,6 +407,6 @@ public class carroTp2_Q09 {
 
         // -----Saida final---------------------------------------------------------------
 
-        lista.mostrar();
+        pilha.mostrar();
     }
 }

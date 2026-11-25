@@ -32,21 +32,11 @@ class No {
     }
 
 
+// altura em O (1) so le o campo e devolve 
+public  static int getNivel ( No i )  { return  ( i == null ) ? -1 : i.nivel;  }
 
-public  static int getNivel(No i) {
-    if (i == null) { return -1; }
+// recalcula a altura desde o no a partir dos filhos
+public void setNivel()  { this.nivel = 1 + Math.max(getNivel(this.esq), getNivel(this.dir)); }
 
-    int heightLeft  = getNivel(i.esq);
-    int heightRight = getNivel(i.dir);
-    i.nivel = 1 + Math.max(heightLeft, heightRight);
-
-    return i.nivel;
-}
-
-public void setNivel() {
-    this.nivel = 1 + Math.max(getNivel(this.esq), getNivel(this.dir));
-}
-
-
-
+public static int getFator ( No i ) { return  (i == null ) ? 0 : getNivel( i.esq ) - getNivel( i.dir ); }
 }

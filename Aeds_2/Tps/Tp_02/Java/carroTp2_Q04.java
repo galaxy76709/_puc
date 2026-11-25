@@ -6,129 +6,116 @@ matricula >> 845963
 
 
 */
-package Aeds_2.Tps.Tp_02;
+package Aeds_2.Tps.Tp_02.Java;
 
 import java.util.*;
 import java.io.*;
 
 class Celula<T> {
-    public T valor;
-    public Celula<T> prox;
+	public T valor;
+	public Celula<T> prox;
 
-    public Celula(T valor) {
-        this.valor = valor;
-        this.prox = null;
-    }
+	public Celula(T valor) {
+		this.valor = valor;
+		this.prox = null;
+	}
 
-    public T getValor() {
-        return this.valor;
-    }
+	public T getValor() {
+		return this.valor;
+	}
 
-    public void setValor(T valor) {
-        this.valor = valor;
-    }
+	public void setValor(T valor) {
+		this.valor = valor;
+	}
 
-    @Override
-    public String toString() {
-        return "Celula [" + this.valor + "]";
-    }
+	@Override
+	public String toString() {
+		return "Celula [" + this.valor + "]";
+	}
 }
+
 /*
-Ideia de lista com valor generico 
-uma lista capaz de receber valores como int, String, double e afins
-e matentendo a padronizacao. 
-
-Ideia proposta pelo aluno: Kaiky
-*/
+ * Ideia de lista com valor generico
+ * uma lista capaz de receber valores como int, String, double e afins
+ * e matentendo a padronizacao.
+ * 
+ * Ideia proposta pelo aluno: Kaiky
+ */
 class Listam<T> {
-    private Celula<T> cabeca;
-    private int tamanho;
+	private Celula<T> cabeca;
+	private int tamanho;
 
-    public Listam() {
-        this.cabeca = null;
-        this.tamanho = 0;
-    }
+	public Listam() {
+		this.cabeca = null;
+		this.tamanho = 0;
+	}
 
-    public Celula<T> inserirCelula(int x, T valor) {
-        if (x < 0 || x > tamanho) {
-            throw new IndexOutOfBoundsException("Posição inválida: " + x);
-        }
+	public Celula<T> inserirCelula(int x, T valor) {
+		if (x < 0 || x > tamanho) {
+			throw new IndexOutOfBoundsException("Posição inválida: " + x);
+		}
 
-        Celula<T> nova = new Celula<>(valor);
+		Celula<T> nova = new Celula<>(valor);
 
-        if (x == 0) {
-            nova.prox = cabeca;
-            cabeca = nova;
-        } else {
-            Celula<T> atual = cabeca;
-            for (int i = 0; i < x - 1; i++) {
-                atual = atual.prox;
-            }
-            nova.prox = atual.prox;
-            atual.prox = nova;
-        }
+		if (x == 0) {
+			nova.prox = cabeca;
+			cabeca = nova;
+		} else {
+			Celula<T> atual = cabeca;
+			for (int i = 0; i < x - 1; i++) {
+				atual = atual.prox;
+			}
+			nova.prox = atual.prox;
+			atual.prox = nova;
+		}
 
-        tamanho++;
-        return nova;
-    }
+		tamanho++;
+		return nova;
+	}
 
-    public T removerCelula(int x) {
-        if (x < 0 || x >= tamanho) {
-            throw new IndexOutOfBoundsException("Posição inválida: " + x);
-        }
+	public T removerCelula(int x) {
+		if (x < 0 || x >= tamanho) {
+			throw new IndexOutOfBoundsException("Posição inválida: " + x);
+		}
 
-        Celula<T> removida;
+		Celula<T> removida;
 
-        if (x == 0) {
-            removida = cabeca;
-            cabeca = cabeca.prox;
-        } else {
-            Celula<T> atual = cabeca;
-            for (int i = 0; i < x - 1; i++) {
-                atual = atual.prox;
-            }
-            removida = atual.prox;
-            atual.prox = removida.prox;
-        }
+		if (x == 0) {
+			removida = cabeca;
+			cabeca = cabeca.prox;
+		} else {
+			Celula<T> atual = cabeca;
+			for (int i = 0; i < x - 1; i++) {
+				atual = atual.prox;
+			}
+			removida = atual.prox;
+			atual.prox = removida.prox;
+		}
 
-        tamanho--;
-        return removida.getValor();
-    }
+		tamanho--;
+		return removida.getValor();
+	}
 
-    public Celula<T> buscarCelula(int x) {
-        if (x < 0 || x >= tamanho) {
-            throw new IndexOutOfBoundsException("Posição inválida: " + x);
-        }
+	public Celula<T> buscarCelula(int x) {
+		if (x < 0 || x >= tamanho) {
+			throw new IndexOutOfBoundsException("Posicao invalida: " + x);
+		}
 
-        Celula<T> atual = cabeca;
-        for (int i = 0; i < x; i++) {
-            atual = atual.prox;
-        }
-        return atual;
-    }
+		Celula<T> atual = cabeca;
+		for (int i = 0; i < x; i++) {
+			atual = atual.prox;
+		}
+		return atual;
+	}
+	public int tamanho() {
+		return tamanho;
+	}
 
-    public int tamanho() {
-        return tamanho;
-    }
+	public boolean vazia() {
+		return cabeca == null;
+	}
 
-    public boolean vazia() {
-        return cabeca == null;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        Celula<T> atual = cabeca;
-        while (atual != null) {
-            sb.append(atual.getValor());
-            if (atual.prox != null) sb.append(", ");
-            atual = atual.prox;
-        }
-        sb.append("]");
-        return sb.toString();
-    }
 }
-
 
 // classe voltada para criacao e formatacao da Data
 // funcao de para criacao e formatacao de data
@@ -206,15 +193,16 @@ class Carro {
 		this.tracao = tracao;
 	}
 
-	public Carro(){ }
+	public Carro() {
+	}
 
-// funcoes destinadas para pegar os valores 
+	// funcoes destinadas para pegar os valores
 	public int getId() {
 		return this.id;
 	}
 
 	public int getAno() {
-		return this.ano ;
+		return this.ano;
 	}
 
 	public int getCilindros() {
@@ -238,8 +226,12 @@ class Carro {
 		return Double.parseDouble(s.trim());
 	}
 
-// construtor da classe Carro
-// construtor destinado para receber valores e formatacao 
+	public String getMarca() {
+		return this.marca;
+	}
+
+	// construtor da classe Carro
+	// construtor destinado para receber valores e formatacao
 
 	public static Carro parseVeiculos(String S) {
 
@@ -256,16 +248,16 @@ class Carro {
 		String[] combustivel = compos[5].split(";");
 
 		int cilindros = Integer.parseInt(compos[6]);
-		
+
 		double cilindrada = parseDouble(compos[7]);
-		
+
 		String transmissao = compos[8];
 		String tracao = compos[9];
-		
+
 		double consumoCidade = parseDouble(compos[10]);
 		double consumoEstrada = parseDouble(compos[11]);
 		double co2 = parseDouble(compos[12]);
-		
+
 		boolean turbo = Boolean.parseBoolean(compos[13]);
 
 		Data dt = Data.parseData(compos[14]);
@@ -309,70 +301,112 @@ class Carro {
 
 }
 
-public class carroTp2Prt_1 {
+public class carroTp2_Q04 {
+
+	/*
+	 * Funcao destinada para o Algoritimo de insercao Q04
+	 * Exemplo pego do GitHub de Aeds2 e modificado para ordenar apartir do atributo
+	 * marca
+	 * 
+	 */
+
+	public void insertionSort(Listam <Carro> lista) {
+		for (int i = 0; i < lista.tamanho(); i++) {
+			Carro key = lista.buscarCelula(i).getValor();
+
+			int j = i - 1;
+			// lacao de repeticao que vai comparar o valor (marca) da celula J com o valor
+			// da key ( marca de I)
+			while (j >= 0 && lista.buscarCelula(j).getValor().getMarca().compareTo(key.getMarca()) > 0) {
+				lista.buscarCelula(j + 1).setValor(lista.buscarCelula(j).getValor());
+				j--;
+			}
+			lista.buscarCelula(j + 1).setValor(key);
+
+		}
+	}
+
 	public static void main(String[] args) throws IOException {
 		Listam<Carro> carros = Carro.lerCsv();
+		carroTp2_Q04 ordenador = new carroTp2_Q04();
+		ordenador.insertionSort(carros);
+
+		Listam<Carro> selecionados = new Listam<>();
+
+
 		try (BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in))) {
 			String linha;
+
 			while ((linha = entrada.readLine()) != null) {
 				int id = Integer.parseInt(linha.trim());
 				if (id == -1) {
 					break;
 				}
 
-				for (int i = 0; i < carros.tamanho(); i++) {
+			for (int i = 0; i < carros.tamanho(); i++) {
 					Carro carro = carros.buscarCelula(i).getValor();
 					if (carro.getId() == id) {
-						System.out.println(carro.formatar());
+						selecionados.inserirCelula(selecionados.tamanho(), carro);
 						break;
 					}
 				}
 			}
 		}
+
+// ordena apenas os carros solicitados >> por marca
+		ordenador.insertionSort(selecionados);
+
+		for (int i = 0; i < selecionados.tamanho(); i++) {
+			System.out.println(selecionados.buscarCelula(i).getValor().formatar());
+		}
 	}
 
-/*bloco usado somente para testar a resposta com pub.in e pub.out.
-para testar por arquivos, descomente este metodo e chama no main.
-	  private static void testarComArquivos(Listam<Carro> carros) throws IOException {
-	      File arquivoEntrada = new File("Questao01/pub.in");
-	      File arquivoSaida = new File("Questao01/resp.out");
-	      File arquivoOficial = new File("Questao01/pub.out");
-	 
-	      try (BufferedReader entrada = new BufferedReader(new FileReader(arquivoEntrada));
-	           BufferedWriter saida = new BufferedWriter(new FileWriter(arquivoSaida))) {
-	          String linha;
-	          while ((linha = entrada.readLine()) != null && !linha.equals("-1")) {
-	              int id = Integer.parseInt(linha.trim());
-	              for (int i = 0; i < carros.tamanho(); i++) {
-	                  Carro carro = carros.buscarCelula(i).getValor();
-	                  if (carro.getId() == id) {
-	                      saida.write(carro.formatar());
-	                      saida.newLine();
-	                      break;
-	                  }
-	              }
-	          }
-	      }
-	 
-	      System.out.println(compararArquivos(arquivoSaida, arquivoOficial)
-	              ? "resp.out confere com pub.out"
-	              : "resp.out difere de pub.out");
-	  }
-	 
-	  private static boolean compararArquivos(File primeiro, File segundo) throws IOException {
-	      try (BufferedReader leitor1 = new BufferedReader(new FileReader(primeiro));
-	           BufferedReader leitor2 = new BufferedReader(new FileReader(segundo))) {
-	          String linha1;
-	          String linha2;
-	          do {
-	              linha1 = leitor1.readLine();
-	              linha2 = leitor2.readLine();
-	              if (!Objects.equals(linha1, linha2)) {
-	                  return false;
-	              }
-	          } while (linha1 != null);
-	          return true;
-	      }
-	  }
-*/
+	/*
+	 * bloco usado somente para testar a resposta com pub.in e pub.out.
+	 * para testar por arquivos, descomente este metodo e chama no main.
+	 * private static void testarComArquivos(Listam<Carro> carros) throws
+	 * IOException {
+	 * File arquivoEntrada = new File("Questao01/pub.in");
+	 * File arquivoSaida = new File("Questao01/resp.out");
+	 * File arquivoOficial = new File("Questao01/pub.out");
+	 * 
+	 * try (BufferedReader entrada = new BufferedReader(new
+	 * FileReader(arquivoEntrada));
+	 * BufferedWriter saida = new BufferedWriter(new FileWriter(arquivoSaida))) {
+	 * String linha;
+	 * while ((linha = entrada.readLine()) != null && !linha.equals("-1")) {
+	 * int id = Integer.parseInt(linha.trim());
+	 * for (int i = 0; i < carros.tamanho(); i++) {
+	 * Carro carro = carros.buscarCelula(i).getValor();
+	 * if (carro.getId() == id) {
+	 * saida.write(carro.formatar());
+	 * saida.newLine();
+	 * break;
+	 * }
+	 * }
+	 * }
+	 * }
+	 * 
+	 * System.out.println(compararArquivos(arquivoSaida, arquivoOficial)
+	 * ? "resp.out confere com pub.out"
+	 * : "resp.out difere de pub.out");
+	 * }
+	 * 
+	 * private static boolean compararArquivos(File primeiro, File segundo) throws
+	 * IOException {
+	 * try (BufferedReader leitor1 = new BufferedReader(new FileReader(primeiro));
+	 * BufferedReader leitor2 = new BufferedReader(new FileReader(segundo))) {
+	 * String linha1;
+	 * String linha2;
+	 * do {
+	 * linha1 = leitor1.readLine();
+	 * linha2 = leitor2.readLine();
+	 * if (!Objects.equals(linha1, linha2)) {
+	 * return false;
+	 * }
+	 * } while (linha1 != null);
+	 * return true;
+	 * }
+	 * }
+	 */
 }

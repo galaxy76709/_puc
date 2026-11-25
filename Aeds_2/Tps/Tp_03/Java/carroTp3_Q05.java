@@ -3,19 +3,23 @@
 aluno     >> Kayky Gabriel Marques
 matricula >> 845963
 */
-
-package Aeds_2.Tps.Tp_03;
-
+package Aeds_2.Tps.Tp_03.Java;
 import java.util.*;
 import java.io.*;
 
+/*
+ * celula da lista DUPLAMENTE encadeada:
+ * alem do prox (proxima celula), agora tem o ant (celula anterior)
+ */
 class Celula<T> {
 	public T valor;
 	public Celula<T> prox;
+	public Celula<T> ant; // add ant para a lista duplamente
 
 	public Celula(T valor) {
 		this.valor = valor;
 		this.prox = null;
+		this.ant = null;
 	}
 
 	public T getValor() {
@@ -37,15 +41,28 @@ class Celula<T> {
  * uma lista capaz de receber valores como int, String, double e afins
  * e matentendo a padronizacao.
  * 
+ * Agora duplamente encadeada: guarda a cabeca e a cauda, e cada celula
+ * aponta para a anterior e para a proxima.
+ * 
  * Ideia proposta pelo aluno: Kaiky
  */
 class Listam<T> {
 	private Celula<T> cabeca;
+	private Celula<T> cauda;
 	private int tamanho;
 
 	public Listam() {
 		this.cabeca = null;
+		this.cauda = null;
 		this.tamanho = 0;
+	}
+
+	public Celula<T> getCabeca() {
+		return this.cabeca;
+	}
+
+	public Celula<T> getCauda() {
+		return this.cauda;
 	}
 
 	public Celula<T> inserirCelula(int x, T valor) {
@@ -55,16 +72,27 @@ class Listam<T> {
 
 		Celula<T> nova = new Celula<>(valor);
 
-		if (x == 0) {
-			nova.prox = cabeca;
+		if (tamanho == 0) {
+			// lista vazia: a nova celula e cabeca e cauda ao mesmo tempo
 			cabeca = nova;
+			cauda = nova;
+		} else if (x == 0) {
+			// inicio
+			nova.prox = cabeca;
+			cabeca.ant = nova;
+			cabeca = nova;
+		} else if (x == tamanho) {
+			// fim (O(1) por causa da cauda)
+			nova.ant = cauda;
+			cauda.prox = nova;
+			cauda = nova;
 		} else {
-			Celula<T> atual = cabeca;
-			for (int i = 0; i < x - 1; i++) {
-				atual = atual.prox;
-			}
-			nova.prox = atual.prox;
-			atual.prox = nova;
+			// meio: entra antes da celula que esta hoje na posicao x
+			Celula<T> atual = buscarCelula(x);
+			nova.ant = atual.ant;
+			nova.prox = atual;
+			atual.ant.prox = nova;
+			atual.ant = nova;
 		}
 
 		tamanho++;
@@ -76,32 +104,41 @@ class Listam<T> {
 			throw new IndexOutOfBoundsException("Posição inválida: " + x);
 		}
 
-		Celula<T> removida;
+		Celula<T> removida = buscarCelula(x);
 
-		if (x == 0) {
-			removida = cabeca;
-			cabeca = cabeca.prox;
+		if (removida.ant != null) {
+			removida.ant.prox = removida.prox;
 		} else {
-			Celula<T> atual = cabeca;
-			for (int i = 0; i < x - 1; i++) {
-				atual = atual.prox;
-			}
-			removida = atual.prox;
-			atual.prox = removida.prox;
+			cabeca = removida.prox;
+		}
+
+		if (removida.prox != null) {
+			removida.prox.ant = removida.ant;
+		} else {
+			cauda = removida.ant;
 		}
 
 		tamanho--;
 		return removida.getValor();
 	}
 
+	// percorre a partir da extremidade mais proxima da posicao x
 	public Celula<T> buscarCelula(int x) {
 		if (x < 0 || x >= tamanho) {
 			throw new IndexOutOfBoundsException("Posicao invalida: " + x);
 		}
 
-		Celula<T> atual = cabeca;
-		for (int i = 0; i < x; i++) {
-			atual = atual.prox;
+		Celula<T> atual;
+		if (x < tamanho / 2) {
+			atual = cabeca;
+			for (int i = 0; i < x; i++) {
+				atual = atual.prox;
+			}
+		} else {
+			atual = cauda;
+			for (int i = tamanho - 1; i > x; i--) {
+				atual = atual.ant;
+			}
 		}
 		return atual;
 	}
@@ -320,113 +357,102 @@ class Carro {
 
 }
 
-// -----Heapsort---------------------------------------------------------------
+// -----Quicksort---------------------------------------------------------------
 /*
 codigo tirado do Github de Aeds 2 e reaproveitado mudando formas e estilo
 Autor: Max do Val
+
+Adaptado para lista duplamente encadeada: os indices i e j do quicksort
+original viram ponteiros de celula (ci e cj). O ci anda para frente (prox)
+e o cj anda para tras (ant), por isso a lista precisa ser duplamente encadeada.
+Os indices continuam sendo contados para saber quando i e j se cruzam.
 */
-class Heapsort {
-	private Carro[] array;
-	private int n;
+class Quicksort {
 	private Listam<Carro> lista;
+	private int n;
 
 	/**
-	 * Construtor.
+	 * construtor.
 	 * @param lista lista de carros que sera ordenada (ordena a propria lista)
 	 */
-	public Heapsort(Listam<Carro> lista) {
+	public Quicksort(Listam<Carro> lista) {
 		this.lista = lista;
 		this.n = lista.tamanho();
 	}
 
 	/**
-	 * Criterio: co2 crescente, desempate por transmissao.
+	 * criterio: consumoEstrada crescente, desempate por marca.
 	 * retorna <0 se a vem antes de b, >0 se depois, 0 se iguais nos dois criterios
 	 */
 	private int comparar(Carro a, Carro b) {
-		int cmp = Double.compare(a.getCo2(), b.getCo2());
+		int cmp = Double.compare(a.getConsumoEstrada(), b.getConsumoEstrada());
 		if (cmp != 0) {
 			return cmp;
 		}
-		return a.getTransmissao().compareToIgnoreCase(b.getTransmissao());
+		return a.getMarca().compareToIgnoreCase(b.getMarca());
 	}
 
-	private void swap(int i, int j) {
-		Carro tmp = array[i];
-		array[i] = array[j];
-		array[j] = tmp;
+	// troca os valores guardados em duas celulas
+	private void swap(Celula<Carro> a, Celula<Carro> b) {
+		Carro tmp = a.getValor();
+		a.setValor(b.getValor());
+		b.setValor(tmp);
 	}
 
 	/**
-	 * Algoritmo de ordenacao Heapsort.
+	 * esq e dir sao os indices; cEsq e cDir sao as celulas desses indices.
+	 */
+	private void quicksortRec(Celula<Carro> cEsq, Celula<Carro> cDir, int esq, int dir) {
+		int i = esq, j = dir;
+		Celula<Carro> ci = cEsq, cj = cDir;
+
+		// pivo = valor do meio: anda (dir-esq)/2 celulas a partir de cEsq
+		Celula<Carro> cPivo = cEsq;
+		for (int k = 0; k < (dir - esq) / 2; k++) {
+			cPivo = cPivo.prox;
+		}
+		Carro pivo = cPivo.getValor();
+
+		while (i <= j) {
+			while (comparar(ci.getValor(), pivo) < 0) {
+				ci = ci.prox;
+				i++;
+			}
+			while (comparar(cj.getValor(), pivo) > 0) {
+				cj = cj.ant;
+				j--;
+			}
+			if (i <= j) {
+				swap(ci, cj);
+				ci = ci.prox;
+				i++;
+				cj = cj.ant;
+				j--;
+			}
+		}
+		if (esq < j) {
+			quicksortRec(cEsq, cj, esq, j);
+		}
+		if (i < dir) {
+			quicksortRec(ci, cDir, i, dir);
+		}
+	}
+
+	/**
+	 * Algoritmo de ordenacao Quicksort.
 	 */
 	public void sort() {
 		if (n <= 1) {
 			return;
 		}
-
-// copia a lista para um vetor ignorando a posicao zero
-		array = new Carro[n + 1];
-		Celula<Carro> atual = lista.buscarCelula(0);
-		for (int i = 1; i <= n; i++) {
-			array[i] = atual.getValor();
-			atual = atual.prox;
-		}
-
-// construcao do heap
-		for (int tamHeap = 2; tamHeap <= n; tamHeap++) {
-			construir(tamHeap);
-		}
-
-// 0rdenacao propriamente dita
-		int tamHeap = n;
-		while (tamHeap > 1) {
-			swap(1, tamHeap--);
-			reconstruir(tamHeap);
-		}
-
-// devolve o resultado para a lista original
-		atual = lista.buscarCelula(0);
-		for (int i = 1; i <= n; i++) {
-			atual.setValor(array[i]);
-			atual = atual.prox;
-		}
-	}
-
-	public void construir(int tamHeap) {
-		for (int i = tamHeap; i > 1 && comparar(array[i], array[i / 2]) > 0; i /= 2) {
-			swap(i, i / 2);
-		}
-	}
-
-	public void reconstruir(int tamHeap) {
-		int i = 1;
-		while (i <= (tamHeap / 2)) {
-			int filho = getMaiorFilho(i, tamHeap);
-			if (comparar(array[i], array[filho]) <= 0) {
-				swap(i, filho);
-				i = filho;
-			} else {
-				i = tamHeap;
-			}
-		}
-	}
-
-	public int getMaiorFilho(int i, int tamHeap) {
-		int filho;
-		if (2 * i == tamHeap || comparar(array[2 * i], array[2 * i + 1]) >= 0) {
-			filho = 2 * i;
-		} else {
-			filho = 2 * i + 1;
-		}
-		return filho;
+		quicksortRec(lista.getCabeca(), lista.getCauda(), 0, n - 1);
 	}
 }
 // ---------------------------------------------------------------------------
 
-public class carroTp3_Q03 {
+public class carroTp3_Q05 {
 
-	// -----main---------------------------------------------------------------
+// -----main---------------------------------------------------------------
 	public static void main(String[] args) throws IOException {
 		Listam<Carro> carros = Carro.lerCsv();
 		Listam<Carro> selecionados = new Listam<>();
@@ -439,69 +465,21 @@ public class carroTp3_Q03 {
 					break;
 				}
 
-				for (int i = 0; i < carros.tamanho(); i++) {
-					Carro carro = carros.buscarCelula(i).getValor();
-					if (carro.getId() == id) {
-						selecionados.inserirCelula(selecionados.tamanho(), carro);
+				for (Celula<Carro> c = carros.getCabeca(); c != null; c = c.prox) {
+					if (c.getValor().getId() == id) {
+						selecionados.inserirCelula(selecionados.tamanho(), c.getValor());
 						break;
 					}
 				}
 			}
 		}
 
-		new Heapsort(selecionados).sort();
+		new Quicksort(selecionados).sort();
 
-		for (int i = 0; i < selecionados.tamanho(); i++) {
-			System.out.println(selecionados.buscarCelula(i).getValor().formatar());
+		for (Celula<Carro> c = selecionados.getCabeca(); c != null; c = c.prox) {
+			System.out.println(c.getValor().formatar());
 		}
 	}
 
-	/*
-	 * bloco usado somente para testar a resposta com pub.in e pub.out.
-	 * para testar por arquivos, descomente este metodo e chama no main.
-	 * private static void testarComArquivos(Listam<Carro> carros) throws
-	 * IOException {
-	 * File arquivoEntrada = new File("Questao07/pub.in");
-	 * File arquivoSaida = new File("Questao07/resp.out");
-	 * File arquivoOficial = new File("Questao07/pub.out");
-	 * 
-	 * try (BufferedReader entrada = new BufferedReader(new
-	 * FileReader(arquivoEntrada));
-	 * BufferedWriter saida = new BufferedWriter(new FileWriter(arquivoSaida))) {
-	 * String linha;
-	 * while ((linha = entrada.readLine()) != null && !linha.equals("-1")) {
-	 * int id = Integer.parseInt(linha.trim());
-	 * for (int i = 0; i < carros.tamanho(); i++) {
-	 * Carro carro = carros.buscarCelula(i).getValor();
-	 * if (carro.getId() == id) {
-	 * saida.write(carro.formatar());
-	 * saida.newLine();
-	 * break;
-	 * }
-	 * }
-	 * }
-	 * }
-	 * 
-	 * System.out.println(compararArquivos(arquivoSaida, arquivoOficial)
-	 * ? "resp.out confere com pub.out"
-	 * : "resp.out difere de pub.out");
-	 * }
-	 * 
-	 * private static boolean compararArquivos(File primeiro, File segundo) throws
-	 * IOException {
-	 * try (BufferedReader leitor1 = new BufferedReader(new FileReader(primeiro));
-	 * BufferedReader leitor2 = new BufferedReader(new FileReader(segundo))) {
-	 * String linha1;
-	 * String linha2;
-	 * do {
-	 * linha1 = leitor1.readLine();
-	 * linha2 = leitor2.readLine();
-	 * if (!Objects.equals(linha1, linha2)) {
-	 * return false;
-	 * }
-	 * } while (linha1 != null);
-	 * return true;
-	 * }
-	 * }
-	 */
+	
 }

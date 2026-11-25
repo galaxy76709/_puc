@@ -1,7 +1,7 @@
 package Aeds_2.atividades.estrutura_Hibria;
 import java.util.*;
 
-import Aeds_2.Tps.Tp_01.invertRec;
+import Aeds_2.Tps.Tp_01.Java.invertRec;
 
 /*
 Uma arvore Binaria com uma lista simplesmente encadeda

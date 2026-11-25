@@ -1,4 +1,4 @@
-package Aeds_2.Tps.Tp_01;
+package Aeds_2.Tps.Tp_01.Java;
 
 import java.util.Random;
 import java.util.Scanner;

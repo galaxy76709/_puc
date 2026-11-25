@@ -4,15 +4,48 @@ package Aeds_2.atividades.lab.Arvores.ArvoreAVL;
  * Arvore binaria de pesquisa
  * @author Max do Val Machado
  */
-public class ArvoreBinaria {
+public class ArvoreAvl {
 	private No raiz; // Raiz da arvore.
 
 	/**
 	 * Construtor da classe.
 	 */
-	public ArvoreBinaria() {
+	public ArvoreAvl() {
 		raiz = null;
 	}
+
+
+
+// rotacoes -----------------------------------------------------------
+private No rotacionarDir ( No i ){
+// realizando um swap com os nos
+	No novaRaiz = i.esq; 
+	i.esq = novaRaiz.dir; 
+	novaRaiz.dir = i; 
+
+	i.setNivel();
+	novaRaiz.setNivel();
+	return  novaRaiz;
+}
+
+private No rotacionarEsq ( No i ){
+// realizando um swap com os nos
+	No novaRaiz = i.dir; 
+	i.esq = novaRaiz.esq; 
+	novaRaiz.esq = i; 
+
+	i.setNivel();
+	novaRaiz.setNivel();
+	return  novaRaiz;
+}
+//  -------------------------------------------------------------------
+
+//  balancear ---------------------------------------------------------
+
+//  -------------------------------------------------------------------
+
+
+
 
 	/**
 	 * Metodo publico iterativo para pesquisar elemento.

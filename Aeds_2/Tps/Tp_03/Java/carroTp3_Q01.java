@@ -1,14 +1,14 @@
-//package Questao01.cor;
 
 /*
-26/02 
+14/10
 aluno     >> Kayky Gabriel Marques
 matricula >> 845963
 
 
 */
+// -----Dependencias---------------------------------------------------------------
 
-package Aeds_2.Tps.Tp_02;
+package Aeds_2.Tps.Tp_03.Java;
 
 import java.util.*;
 import java.io.*;
@@ -157,6 +157,7 @@ class Data {
 
 // --------------------------------------------
 
+// -----Carro---------------------------------------------------------------
 // classe voltada para criacao e formatacao dos carros
 class Carro {
 	private int id = 0;
@@ -196,7 +197,8 @@ class Carro {
 		this.tracao = tracao;
 	}
 
-	// ------------Gets--------------------------------------------------------
+	// -----Gets---------------------------------------------------------------
+
 	public Carro() {
 	}
 
@@ -233,9 +235,11 @@ class Carro {
 	public String getMarca() {
 		return this.marca;
 	}
-	// ------------endGets--------------------------------------------------------
 
-	// --------------------------------------------------------------------
+	public String getCategoria() {
+		return this.categoria;
+	}
+
 	// construtor da classe Carro
 	// construtor destinado para receber valores e formatacao
 
@@ -275,9 +279,6 @@ class Carro {
 
 	}
 
-	// --------------------------------------------------------------------
-
-	// --------------------------------------------------------------------
 	public String formatar() {
 		String combustiveis = "[" + String.join(",", combustivel) + "]";
 		String cilindradaFormatada = String.format(Locale.US, "%.1f", cilindrada);
@@ -290,11 +291,12 @@ class Carro {
 				+ " ## " + consumoCidadeFormatado + " ## " + consumoEstradaFormatado + " ## " + co2Formatado
 				+ " ## " + turbo + " ## " + dataRegistro.formatarData() + "]";
 	}
-	// --------------------------------------------------------------------
 
-	// --------------------------------------------------------------------
 	public static Listam<Carro> lerCsv() throws IOException {
 		File arquivo = new File("/tmp/veiculos.csv");
+		if (!arquivo.isFile()) {
+			arquivo = new File("../../veiculos.csv");
+		}
 		Listam<Carro> carros = new Listam<>();
 
 		try (BufferedReader leitor = new BufferedReader(new InputStreamReader(
@@ -309,127 +311,147 @@ class Carro {
 		}
 		return carros;
 	}
-	// --------------------------------------------------------------------
 
 }
 
-public class carroTp2_Q07 {
-	// --------------------------------------------------------------------
-	public void insertionSort(Listam<Carro> lista) {
-		for (int i = 0; i < lista.tamanho(); i++) {
-			Carro key = lista.buscarCelula(i).getValor();
+public class carroTp3_Q01 {
 
-			int j = i - 1;
-			// lacao de repeticao que vai comparar o valor (marca) da celula J com o valor
-			// da key ( marca de I)
-		while (j >= 0 && lista.buscarCelula(j).getValor().getCilindrada() > key.getCilindrada()) {
-					lista.buscarCelula(j + 1).setValor(lista.buscarCelula(j).getValor());
-				j--;
-			}
-			lista.buscarCelula(j + 1).setValor(key);
-
-		}
-	}
-
-	// --------------------------------------------------------------------
 	/*
-	 * Funcao destinada para o Algoritimo em baldes Q07
-	 * Exemplo pego do site progamiz : https://www.programiz.com/dsa/bucket-sort
-	 * bucket nao e capaz de ordenar tudo completamente sozinho por conta que se
-	 * casa cair mais de 2 carros em um balde
-	 * a ordem entre eles pode ficar indefinida,, portando a melhor ideia e usar o
-	 * selection Sort como segunda fase para
-	 * maior polidez
-	 *
-	 * 
+	 * Merge Sort Q01
+	 * copia a lista para um vetor, ordena o vetor por consumo na cidade
+	 * (desempate por categoria) e devolve os valores para a lista
 	 */
-
-	@SuppressWarnings("unchecked") // >> nao entendi pq o verde implicou com isso
-	
-	public void bucketSort(Listam<Carro> lista) {
-		int size = lista.tamanho();
-
-		if (size <= 0) {
+	public void mergeSort(Listam<Carro> lista) {
+		int n = lista.tamanho();
+		if (n < 2)
 			return;
+
+		Carro[] v = new Carro[n];
+		Celula<Carro> atual = lista.buscarCelula(0);
+		for (int i = 0; i < n; i++) {
+			v[i] = atual.getValor();
+			atual = atual.prox;
 		}
 
-		Listam<Carro>[] baldes = new Listam[10]; // valor pedido na questao
+		mergeSort(v, new Carro[n], 0, n - 1);
 
-		for (int i = 0; i < 10; i = i + 1) {
-			baldes[i] = new Listam<Carro>();
+// vetor >> lista (uma unica passada)
+		atual = lista.buscarCelula(0);
+		for (int i = 0; i < n; i++) {
+			atual.setValor(v[i]);
+			atual = atual.prox;
 		}
-
-		for (int i = 0; i < size; i = i + 1) {
-			Carro carro = lista.buscarCelula(i).getValor();
-			double valorNormal = carro.getCilindrada() / 8.1; // valor de normalizacao proposto pela atividade (8.1)
-			int idxBalde = (int) (valorNormal * 10); // ex: 0.23 = 2.3 >> idx sera 2.
-
-			if (idxBalde < 0) {
-				idxBalde = 0;
-			}
-
-			if (idxBalde >= 10) {
-				idxBalde = 9;
-			}
-
-			baldes[idxBalde].inserirCelula(baldes[idxBalde].tamanho(), carro);
-		}
-
-		for (int i = 0; i < 10; i = i + 1) {
-			insertionSort(baldes[i]); // >> ordenando por cada balde
-		}
-
-		// parte do codigo que pega a lista ordenada e repassa para a estrutura orginal ( sua lista)
-		int index = 0;
-		for (int i = 0; i < 10; i++) {
-			Listam<Carro> balde = baldes[i];
-			for (int j = 0, tam = balde.tamanho(); j < tam; j++) {
-				lista.buscarCelula(index).setValor(balde.buscarCelula(j).getValor());
-				index++;
-			}
-		}
-
 	}
 
-// -----main---------------------------------------------------------------
-public static void main(String[] args) throws IOException {
-    Listam<Carro> carros = Carro.lerCsv();
-    carroTp2_Q07 ordenador = new carroTp2_Q07();
-	Listam<Carro> selecionados = new Listam<>();
+	private void mergeSort(Carro[] v, Carro[] aux, int left, int right) {
+		if (left >= right)
+			return;
 
-    try (BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in))) {
-        String linha;
-        while ((linha = entrada.readLine()) != null) {
-            int id = Integer.parseInt(linha.trim());
-            if (id == -1) {
-                break;
-            }
+		int mid = left + (right - left) / 2;
+		mergeSort(v, aux, left, mid);
+		mergeSort(v, aux, mid + 1, right);
 
-			for (int i = 0; i < carros.tamanho(); i++) {
-				Carro carro = carros.buscarCelula(i).getValor();
-				if (carro.getId() == id) {
-					selecionados.inserirCelula(selecionados.tamanho(), carro);
+		if (comparar(v[mid], v[mid + 1]) <= 0) {return;} //condicao que preve se os valores sao identicos, caso seja nao precisa comparar 
+
+		intercalar(v, aux, left, mid, right);
+	}
+
+	private void intercalar(Carro[] v, Carro[] aux, int left, int mid, int right) {
+		for (int i = left; i <= right; i++) {
+			aux[i] = v[i];
+		}
+
+		int i = left;
+		int j = mid + 1;
+		int k = left;
+
+		while (i <= mid && j <= right) {
+			if (comparar(aux[i], aux[j]) <= 0) {
+				v[k++] = aux[i++];
+			} else {
+				v[k++] = aux[j++];
+			}
+		}
+		while (i <= mid) {
+			v[k++] = aux[i++];
+		}
+// o que sobrar em j ja esta no lugar certo
+	}
+
+// compara por consumo na cidade e, em caso de empate, por categoria
+	public  int comparar(Carro primeiro, Carro segundo) {
+		int comparacaoConsumo = compararDouble(primeiro.getConsumeCidade(),
+				segundo.getConsumeCidade());
+
+		if (comparacaoConsumo != 0) {
+			return comparacaoConsumo;
+		}
+
+		return compararString(primeiro.getCategoria(), segundo.getCategoria());
+	}
+
+	public int compararDouble(double a, double b) {
+		if (a < b) return -1; // b maior q a 
+
+		if (a > b) return 1; // a maior que b 
+
+		return 0; // iguais
+	}
+
+	public int compararString(String a, String b) {
+		int tamanho = Math.min(a.length(), b.length());
+
+		for (int i = 0; i < tamanho; i++) {
+			char ca = a.charAt(i);
+			char cb = b.charAt(i);
+			if (ca != cb) {
+				return ca - cb;
+			}
+		}
+
+		return a.length() - b.length();
+	}
+
+	public static void main(String[] args) throws IOException {
+		Listam<Carro> carros = Carro.lerCsv();
+		carroTp3_Q01 ordenador = new carroTp3_Q01();
+		Listam<Carro> selecionados = new Listam<>();
+
+		try (BufferedReader entrada = new BufferedReader(new InputStreamReader(System.in))) {
+			String linha;
+
+			while ((linha = entrada.readLine()) != null) {
+				int id = Integer.parseInt(linha.trim());
+				if (id == -1) {
 					break;
 				}
+
+				for (int i = 0; i < carros.tamanho(); i++) {
+					Carro carro = carros.buscarCelula(i).getValor();
+					if (carro.getId() == id) {
+						selecionados.inserirCelula(selecionados.tamanho(), carro);
+						break;
+					}
+				}
 			}
-        }
-    }
+		}
 
-	ordenador.bucketSort(selecionados);
+		// ordena apenas os carros solicitados por consumo na cidade e categoria
+		ordenador.mergeSort(selecionados);
 
-	for (int i = 0; i < selecionados.tamanho(); i++) {
-		System.out.println(selecionados.buscarCelula(i).getValor().formatar());
-    }
-}
+		for (int i = 0; i < selecionados.tamanho(); i++) {
+			System.out.println(selecionados.buscarCelula(i).getValor().formatar());
+		}
+	}
 
 	/*
 	 * bloco usado somente para testar a resposta com pub.in e pub.out.
 	 * para testar por arquivos, descomente este metodo e chama no main.
 	 * private static void testarComArquivos(Listam<Carro> carros) throws
 	 * IOException {
-	 * File arquivoEntrada = new File("Questao07/pub.in");
-	 * File arquivoSaida = new File("Questao07/resp.out");
-	 * File arquivoOficial = new File("Questao07/pub.out");
+	 * File arquivoEntrada = new File("Questao01/pub.in");
+	 * File arquivoSaida = new File("Questao01/resp.out");
+	 * File arquivoOficial = new File("Questao01/pub.out");
 	 * 
 	 * try (BufferedReader entrada = new BufferedReader(new
 	 * FileReader(arquivoEntrada));
