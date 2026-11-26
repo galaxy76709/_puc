@@ -1,11 +1,11 @@
 package Aeds_2.atividades.Hash.Java;
 
-public class tableHash {
+public class hashTableComLista {
 
     private No[] table;
     private int size;
 
-    public tableHash(int size) {
+    public hashTableComLista(int size) {
         this.size = size;
         this.table = new No[size];
 
@@ -76,7 +76,7 @@ public class tableHash {
     }
 
 
-    public void imprimir ( ) { 
+    public void print ( ) { 
         for ( int i = 0; i < size; i = i + 1 ){
             System.out.println(i + ">> ");
 

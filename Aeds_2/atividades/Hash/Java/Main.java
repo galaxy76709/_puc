@@ -1,34 +1,36 @@
 package Aeds_2.atividades.Hash.Java;
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        tableHash tabela = new tableHash(10);
+        //hashTableComLista tabela = new hashTableComLista(10);
+        hashTableReserva.Hash tabela = new hashTableReserva.Hash(5, 3);
 
-        tabela.insert(10, "João");
-        tabela.insert(20, "Maria");
-        tabela.insert(30, "Pedro");
-        tabela.insert(15, "Ana");
-        tabela.insert(25, "Carlos");
 
-        tabela.imprimir();
+        tabela.insert("João");
+        tabela.insert("Maria");
+        tabela.insert("Pedro");
+        tabela.insert("Ana");
+        tabela.insert("Carlos");
+
+        tabela.print();
 
         System.out.println();
 
         System.out.println(
-            "Busca 25: " + tabela.search(25)
+            "Busca Carlos: " + tabela.search("Carlos")
         );
 
         System.out.println(
-            "Busca 30: " + tabela.search(30)
+            "Busca Pedro: " + tabela.search("Pedro")
         );
 
-        tabela.remove(25);
+        tabela.remove("Carlos");
 
         System.out.println();
 
-        System.out.println("Depois de remover 25:");
+        System.out.println("Depois de remover Carlos:");
 
-        tabela.imprimir();
+        tabela.print();
     }
 }
