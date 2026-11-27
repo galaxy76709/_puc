@@ -14,5 +14,5 @@ public class No {
 
     }
 
-// |15 -> min min | | || | |
+
 }
