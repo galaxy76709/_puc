@@ -1,5 +1,5 @@
 //dependencias-----------------------------------------------------
-package Aeds_2.atividades.Arvore;
+package Aeds_2.atividades.Arvore.Java;
 
 //--------------------------------------------------------
 /*classe voltada a criacao de no  */

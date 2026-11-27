@@ -96,7 +96,7 @@ Table *newTable ( int size ){
 // --------------------------------------------------------------------
     void insert ( Table * h, int key, char * value  ) {
 
-         if ( ! itExistis ( h  ,key ) )
+         if ( ! itExistis ( h, key ) )
         { 
 // 1 passo e encontrar o valor do index
         int idx  = hash ( h, key  ); 
